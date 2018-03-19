@@ -53,7 +53,7 @@ Follow the remaining installation steps to install Anaconda Navigator to manage 
 
 ## Authors
 
-* **Arun Nemani** - *Initial work* - (https://github.com/BigMani)
+* **Arun Nemani** - (https://github.com/BigMani)
 
 ## License
 
