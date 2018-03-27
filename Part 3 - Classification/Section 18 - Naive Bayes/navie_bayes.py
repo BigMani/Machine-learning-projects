@@ -1,12 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-# Kernel SVM
+# Naive Bayes classifier
 
 # Importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+
 
 # Importing the dataset 
 dataset = pd.read_csv('Social_Network_Ads.csv')
@@ -24,14 +25,13 @@ X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
 # Create and fit classifier to training set
-from sklearn.svm import SVC
-classifier = SVC(kernel = 'rbf', random_state=0)
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB()
 classifier.fit(X_train, Y_train)
 
 # Predict test set results
 Y_pred = classifier.predict(X_test)
-Y_prob = classifier.decision_function(X_test)
-#Y_prob = classifier.predict_proba(X_test)[:,1]
+Y_prob = classifier.predict_proba(X_test)[:,1]
 
 # Plot confusion matrix
 from sklearn.metrics import confusion_matrix
@@ -77,8 +77,8 @@ def plotROCcurve(Ypred, Yprob, LW, ROC_Color):
     return
 
 # Visualize training and test rest results
-visualizeClassification(classifier, X_train, Y_train, 'red', 'green', 'Kernel SVM classifier (training)')
-visualizeClassification(classifier, X_test, Y_test, 'red', 'green', 'Kernel SVM classifier (test)')
+visualizeClassification(classifier, X_train, Y_train, 'red', 'green', 'Naive Bayes classifier (training)')
+visualizeClassification(classifier, X_test, Y_test, 'red', 'green', 'Naive Bayes classifier (test)')
 
 #Visualize ROC curve
 plotROCcurve(Y_test, Y_prob, 2, 'darkorange')

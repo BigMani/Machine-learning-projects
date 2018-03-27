@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-# Kernel SVM
+# Random forest classification
 
 # Importing the libraries
 import numpy as np
@@ -24,19 +24,17 @@ X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
 # Create and fit classifier to training set
-from sklearn.svm import SVC
-classifier = SVC(kernel = 'rbf', random_state=0)
+from sklearn.ensemble import RandomForestClassifier
+classifier = RandomForestClassifier(n_estimators=10, criterion='entropy', random_state=0)
 classifier.fit(X_train, Y_train)
 
 # Predict test set results
 Y_pred = classifier.predict(X_test)
-Y_prob = classifier.decision_function(X_test)
-#Y_prob = classifier.predict_proba(X_test)[:,1]
+Y_prob = classifier.predict_proba(X_test)[:,1]
 
 # Plot confusion matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(Y_test, Y_pred)
-
 
 # Visualising the classification results method
 def visualizeClassification(ClassifierObject, X, Y, Color1, Color2, Title):
@@ -53,8 +51,8 @@ def visualizeClassification(ClassifierObject, X, Y, Color1, Color2, Title):
         plt.scatter(X_set[Y_set == j, 0], X_set[Y_set == j, 1],
                         c = ListedColormap((Color1, Color2))(i), label = j)
     plt.title(Title)
-    plt.xlabel('Age')
-    plt.ylabel('Estimated Salary')
+    plt.xlabel('Scaled Age')
+    plt.ylabel('Scaled Estimated Salary')
     plt.legend()
     plt.show()
     return
@@ -77,8 +75,8 @@ def plotROCcurve(Ypred, Yprob, LW, ROC_Color):
     return
 
 # Visualize training and test rest results
-visualizeClassification(classifier, X_train, Y_train, 'red', 'green', 'Kernel SVM classifier (training)')
-visualizeClassification(classifier, X_test, Y_test, 'red', 'green', 'Kernel SVM classifier (test)')
+visualizeClassification(classifier, X_train, Y_train, 'red', 'green', ' Random forest classifier (training)')
+visualizeClassification(classifier, X_test, Y_test, 'red', 'green', ' Random forest classifier (test)')
 
 #Visualize ROC curve
 plotROCcurve(Y_test, Y_prob, 2, 'darkorange')
