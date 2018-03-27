@@ -74,8 +74,10 @@ def plotROCcurve(Ypred, Yprob, LW, ROC_Color):
     return
 
 # Visualize training and test rest results
-visualizeClassification(classifier, X_train, Y_train, 'red', 'green', ' classifier (training)')
-visualizeClassification(classifier, X_test, Y_test, 'red', 'green', ' classifier (test)')
+Color1 = np.divide((3.0,28,255),256)
+Color2 = np.divide((255.0,163,3),256)
+visualizeClassification(classifier, X_train, Y_train, Color1, Color2, ' Random forest classifier (training)')
+visualizeClassification(classifier, X_test, Y_test, Color1, Color2, ' Random forest classifier (test)')
 
 #Visualize ROC curve
 plotROCcurve(Y_test, Y_prob, 2, 'darkorange')
