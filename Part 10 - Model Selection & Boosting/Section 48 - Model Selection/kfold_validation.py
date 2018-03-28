@@ -1,15 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-# Logistic Regression
+# K-fold cross validation based on Kernel SVM
 
 # Importing the libraries
 import numpy as np
-import scipy as sp
 import matplotlib.pyplot as plt
 import pandas as pd
-
-
 
 # Importing the dataset 
 dataset = pd.read_csv('Social_Network_Ads.csv')
@@ -26,15 +23,15 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
-# Fitting logistic regression to the training set
-from sklearn.linear_model import LogisticRegression
-classifier = LogisticRegression(random_state = 0)
+# Create and fit classifier to training set
+from sklearn.svm import SVC
+classifier = SVC(kernel = 'rbf', random_state=0)
 classifier.fit(X_train, Y_train)
 
 # Predict test set results
 Y_pred = classifier.predict(X_test)
-Y_prob = classifier.predict_proba(X_test)
-Y_prob = Y_prob[:,1]
+Y_prob = classifier.decision_function(X_test)
+#Y_prob = classifier.predict_proba(X_test)[:,1]
 
 # Plot confusion matrix
 from sklearn.metrics import confusion_matrix
@@ -78,8 +75,14 @@ def plotROCcurve(Ypred, Yprob, LW, ROC_Color):
     plt.show()
     return
 
+# Applying k-fold cross validation
+from sklearn.cross_validation import cross_val_score
+accuracies = cross_val_score(classifier, X = X_train, y = Y_train, cv = 10)
+print('Mean k-Fold CV accuracy: '+ str(round(accuracies.mean(),3)))
+print('STD k-Fold CV accuracy: '+ str(round(accuracies.std(),3)))    
 # Visualize training and test rest results
-visualizeClassification(classifier, X_test, Y_test, 'red', 'green', 'Logsitic regression')
+visualizeClassification(classifier, X_train, Y_train, 'red', 'green', 'Kernel SVM classifier (training)')
+visualizeClassification(classifier, X_test, Y_test, 'red', 'green', 'Kernel SVM classifier (test)')
 
 #Visualize ROC curve
 plotROCcurve(Y_test, Y_prob, 2, 'darkorange')
