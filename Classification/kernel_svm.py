@@ -31,7 +31,6 @@ classifier.fit(X_train, Y_train)
 # Predict test set results
 Y_pred = classifier.predict(X_test)
 Y_prob = classifier.decision_function(X_test)
-#Y_prob = classifier.predict_proba(X_test)[:,1]
 
 # Plot confusion matrix
 from sklearn.metrics import confusion_matrix
